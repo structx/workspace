@@ -52,7 +52,29 @@ chown 0755 /home/vagrant/.kube/config.yaml
 
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f /vagrant/manifests/traefik.yaml
 
+curl -L https://go.dev/dl/go1.22.3.linux-amd64.tar.gz -o /home/vagrant
+rm -rf /usr/local/go && tar -C /usr/local -xzf /home/vagrantgo1.22.3.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >>/home/vagrant/.bashrc
+rm /home/vagrantgo1.22.3.linux-amd64.tar.gz
+
 tee -a /etc/hosts <<EOF
 127.0.0.1 localhost
 127.0.0.1 testnet.structx.local
+EOF
+
+touch -a ~/.ssh/config
+tee -a ~/.ssh/config <<EOF
+Host github.com
+    User git
+    ForwardAgent true
+    Hostname github.com
+    StrictHostKeyChecking accept-new
+    PreferredAuthentication publickey
+    IdentityFile ~/.ssh/id_rsa
+EOF
+
+touch ~/vagrant/.gitconfig
+tee -a ~/.gitconfig <<EOF
+[url "git://github.com:"]
+  insteadOf = https://github.com/"
 EOF
