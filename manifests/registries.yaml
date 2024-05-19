@@ -1,0 +1,7 @@
+mirrors:
+  testnet.structx.local:
+    endpoint:
+      - http://testnet.structx.local:5000/v2
+  docker.io:
+    endoint: 
+      - https://index.docker.io/v2

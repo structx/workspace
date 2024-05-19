@@ -32,7 +32,7 @@ resource "kubernetes_deployment" "registry" {
         volume {
           name = "registry-volume"
           host_path {
-            path = "/etc/rancher/k3s/registry"
+            path = "/vagrant/registry"
             type = "DirectoryOrCreate"
           }
         }
