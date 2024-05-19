@@ -20,6 +20,10 @@ terraform -install-autocomplete
 curl https://releases.rancher.com/install-docker/20.10.sh | sh
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server" K3S_KUBECONFIG_MODE="777" sh -s - --docker --cluster-init
 
+groupadd docker
+usermod -aG docker vagrant
+newgrp docker
+
 apt-get install -y apt-transport-https ca-certificates curl
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -47,34 +51,36 @@ apt-get update
 apt-get install helm
 
 mkdir /home/vagrant/.kube
-cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config.yaml
-chown 0755 /home/vagrant/.kube/config.yaml
+cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
+chown /home/vagrant/.kube/config vagrant vagrant
+chmod 0755 /home/vagrant/.kube/config
+echo 'export KUBECONFIG=/home/vagrant/.kube/config' >>/home/vagrant/.bashrc
 
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f /vagrant/manifests/traefik.yaml
 
 curl -L https://go.dev/dl/go1.22.3.linux-amd64.tar.gz -o /home/vagrant
-rm -rf /usr/local/go && tar -C /usr/local -xzf /home/vagrantgo1.22.3.linux-amd64.tar.gz
+rm -rf /usr/local/go && tar -C /usr/local -xzf /home/vagrant/go1.22.3.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >>/home/vagrant/.bashrc
 rm /home/vagrantgo1.22.3.linux-amd64.tar.gz
 
 tee -a /etc/hosts <<EOF
 127.0.0.1 localhost
 127.0.0.1 testnet.structx.local
+127.0.0.1 registry.structx.local
 EOF
 
-touch -a ~/.ssh/config
-tee -a ~/.ssh/config <<EOF
+touch -a /home/vagrant/.ssh/config
+tee -a /home/vagrant/.ssh/config <<EOF
 Host github.com
     User git
     ForwardAgent true
-    Hostname github.com
-    StrictHostKeyChecking accept-new
-    PreferredAuthentication publickey
+    HostName github.com
+    PreferredAuthentications publickey
     IdentityFile ~/.ssh/id_rsa
 EOF
 
-touch ~/vagrant/.gitconfig
-tee -a ~/.gitconfig <<EOF
+touch /home/vagrant/.gitconfig
+tee -a /home/vagrant/.gitconfig <<EOF
 [url "git://github.com:"]
-  insteadOf = https://github.com/"
+  insteadOf = "https://github.com/"
 EOF

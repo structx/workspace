@@ -1,5 +1,5 @@
 mirrors:
-  testnet.structx.local:
+  registry.structx.local:
     endpoint:
       - http://testnet.structx.local:5000/v2
   docker.io:

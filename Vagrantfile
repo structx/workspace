@@ -9,8 +9,8 @@ Vagrant.configure("2") do |config|
   config.ssh.private_key_path = [ "~/.vagrant.d/insecure_private_key", "~/.ssh/id_rsa" ]
 
   config.vm.provider "virtualbox" do |vb|
-  
-    vb.memory = "1024"
+    vb.cpus = 2
+    vb.memory = "2048"
   end
 
   config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
@@ -20,5 +20,4 @@ Vagrant.configure("2") do |config|
   SHELL
 
   config.vm.provision :shell, path: "bootstrap.sh"
-  config.vm.provision :shell, path: "bootstrap_cluster.sh"
 end
