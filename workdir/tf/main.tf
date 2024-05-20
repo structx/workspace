@@ -12,9 +12,9 @@ provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 
-resource "kubernetes_namespace" "development" {
+resource "kubernetes_namespace" "testnet" {
   metadata {
-    name = "development"
+    name = "testnet"
   }
 }
 
