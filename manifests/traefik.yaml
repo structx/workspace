@@ -5,11 +5,40 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    additionalArguments:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--log.level=DEBUG"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.tcpep.address=:3179"
     image:
       name: traefik
       tag: 2.9.10
     ports:
       web:
-        forwardedHeaders:
-          trustedIPs:
-            - 10.0.0.0/8
+        port: 80
+        service:
+          port: 80
+        traefik:
+          expose: true
+      websecure:
+        port: 443
+        service:
+          port: 80
+      tcpep:
+        port: 3179
+        service:
+          port: 3179
+    api:
+      dashboard: true
+      insecure: true
+    logs:
+      level: debug
+      format: json
+    kubernetes:
+      namespaces:
+        - testnet
+    providers:
+      kubernetesCRD:
+        allowCrossNamespace: true

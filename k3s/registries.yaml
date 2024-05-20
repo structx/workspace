@@ -1,7 +1,7 @@
 mirrors:
   registry.structx.local:
     endpoint:
-      - http://testnet.structx.local:5000/v2
+      - http://registry.structx.local:5000/v2
   docker.io:
     endoint: 
       - https://index.docker.io/v2
