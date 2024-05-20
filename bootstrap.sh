@@ -58,10 +58,12 @@ echo 'export KUBECONFIG=/home/vagrant/.kube/config' >>/home/vagrant/.bashrc
 
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml apply -f /vagrant/manifests/traefik.yaml
 
-curl -L https://go.dev/dl/go1.22.3.linux-amd64.tar.gz -o /home/vagrant
+curl -L https://go.dev/dl/go1.22.3.linux-amd64.tar.gz -o /home/vagrant/go1.22.3.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf /home/vagrant/go1.22.3.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >>/home/vagrant/.bashrc
-rm /home/vagrantgo1.22.3.linux-amd64.tar.gz
+rm /home/vagrant/go1.22.3.linux-amd64.tar.gz
+
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 tee -a /etc/hosts <<EOF
 127.0.0.1 localhost
@@ -77,10 +79,4 @@ Host github.com
     HostName github.com
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id_rsa
-EOF
-
-touch /home/vagrant/.gitconfig
-tee -a /home/vagrant/.gitconfig <<EOF
-[url "git://github.com:"]
-  insteadOf = "https://github.com/"
 EOF
