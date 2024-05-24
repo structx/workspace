@@ -2,7 +2,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
 
-  config.vm.synced_folder "workdir", "vagrant"
+  config.vm.synced_folder "workdir", "/vagrant"
 
   config.vm.network "forwarded_port", guest: 80, host: 8000, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
